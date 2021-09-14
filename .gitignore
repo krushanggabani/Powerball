@@ -10,3 +10,6 @@ build/
 CMakeFiles/
 yaml-cpp/
 data/
+csv-parser/
+OpenBLAS/
+vcpkg/

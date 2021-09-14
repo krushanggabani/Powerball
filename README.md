@@ -13,6 +13,17 @@
 
 - Phidget21 : https://www.phidgets.com/downloads/phidget21/libraries/linux/libphidget/
 
+- if you mistakelnly created the can0 file and want to remove, then open sys/class/net - check if there is any can0 folder if system is not attched to the robot. then you must have to delete it using the following command. 
+```
+sudo ip link delete dev can0 type vcan
+```
+
+- To check the hardware is running correctly, attach robot to the system then run the following command in the bin folder. 
+
+
+```
+sudo ./homing    # if there is no error then it is working perfectly. 
+```
 ### Software
 - Boost library : sudo apt-get install libboost-all-dev
 - BLAS and LAPACK : sudo apt-get install libblas-dev liblapack-dev
@@ -36,6 +47,9 @@
 If there is any error of not found sgemm,dgemm, cheev-, then follow this procedure and run previos step again. 
 
 - https://cmake.org/pipermail/cmake/2012-April/049818.html
+
+
+
 
 # Instructions for the Weiss force sensor
 #### For using force sensor along with ethernet in linux, modify the /etc/network/interfaces to
