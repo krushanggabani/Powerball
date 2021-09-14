@@ -14,6 +14,7 @@
 #include "dynamixel.h"
 #include <utils.h>
 #include <mutex>
+#include <functional>
 
 class USB2Dynamixel_pimpl;
 

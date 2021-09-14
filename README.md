@@ -33,6 +33,10 @@
 - make
 ```
 
+If there is any error of not found sgemm,dgemm, cheev-, then follow this procedure and run previos step again. 
+
+- https://cmake.org/pipermail/cmake/2012-April/049818.html
+
 # Instructions for the Weiss force sensor
 #### For using force sensor along with ethernet in linux, modify the /etc/network/interfaces to
 ```
