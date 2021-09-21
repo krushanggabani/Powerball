@@ -48,6 +48,9 @@ const double dt = 0.01; // sampling time
 const double resolution = 300*M_PI*25.46e-3/2/180/1024;
 int curr_pos_id1 = 1023;
 int curr_pos_id2 = 800;
+float previous_sum      = 0;
+float previous_residual = 0; 
+
 
 // global strings
 std::string taskType = "";
@@ -213,7 +216,18 @@ double magForce(double s){
   return a/(pow(s,3)+b*s+c);
 }
 
+// Skew Symmetry Matrix 
+void skew_symmetry(Vector<3,float> w, Matrix<3,3,float> *S){
+    float w1= w[1];
+    float w2= w[2];
+    float w3= w[3];
 
+
+    *S = Data(0 , -w3, w2 ,
+            w3 , 0 , -w1,
+            -w2, w1, 0  );
+       
+}
 
 
 int main(int argc, char **argv){
@@ -475,6 +489,77 @@ int main(int argc, char **argv){
         strftime(buffer, 10, "%S", localtime(&curtime));
         dataFile << buffer << ":" << tv.tv_usec << ",";
 
+        // collision detection algorithm 
+
+        // Matrix<3,6,float> J_lin = Zeros;     // 3 x 6 linear part of jacobian Matrix
+        // Matrix<3,6,float> J_ang = Zeros;     // 3 x 6 angular part of jacobian Matrix 
+        // Matrix<3,3,float> R     = Zeros;     // 3 x 3 forward rotation matrix 
+        
+        // float mass              = (100+2*45+2*18)/1000;   // mass of the gripper
+        // float Fv                = 0.45;                   // viscous coeeficient
+        // Vector<3,float> xe      = makeVector(1,0,0);      // coordinate of X axis of end effector in end effector frame
+        // Vector<3,float> gravity = makeVector(0, 0,-9.81); // gravity vector in base frame 
+        // float KI                = 40;                     // detection gain
+        
+
+
+        // float timestep = 0.001; 
+        // kin.JacobPos(Q_present,&J_lin);
+        // kin.JacobRot(Q_present,&J_ang);
+        // kin.FK_R(Q_present,&R);
+
+        // Matrix<3,3,float> R_trans = R.T(); 
+
+        // Matrix<3,3,float> Sw =Zeros; 
+        // Vector<3,float> omega = R_trans * J_ang * Qdot;
+        // skew_symmetry(omega,&Sw);
+
+
+        // float Gripper_finger1 = OuterMagSep(curr_pos_id1)-OuterMagSep(curr_pos_id1)+linPot[0];
+        // float Gripper_finger2 = OuterMagSep(curr_pos_id1)-OuterMagSep(curr_pos_id1)+linPot[1];
+        // Vector<3,float> r_end_effector_pos = makeVector(Gripper_finger1-Gripper_finger2,0,17/100 );
+        
+        // float x1_dot          = (Gripper_finger1-Gripper_finger2)/timestep;  
+
+        // //calculating contact force
+
+        // float Fm1 = magForce(OuterMagSep(curr_pos_id1)-linPot[0]) + magForce(linPot[0]-InnerMagSep(curr_pos_id2));
+        // float Fm2 = magForce(OuterMagSep(curr_pos_id1)-linPot[1]) + magForce(linPot[1]-InnerMagSep(curr_pos_id2));
+        // float Fe  = Fm1-Fm2;
+
+        // // total magnetic force 
+
+        // float Fm = (magForce(OuterMagSep(curr_pos_id1)-linPot[0]) - magForce(linPot[0]-InnerMagSep(curr_pos_id2)) ) -(magForce(OuterMagSep(curr_pos_id1)-linPot[1]) - magForce(linPot[1]-InnerMagSep(curr_pos_id2)) );
+
+        // //calculating absolute translation velocity of grasped object in end-effector frame
+
+        // Vector<3,float> pe_dot = R_trans*J_lin*Qdot + Sw * r_end_effector_pos + makeVector(x1_dot,0,0);
+
+        // calculating linear momentum and its derivative
+
+        // float p_linear_momentum = mass* (xe ^ pe_dot);
+        // float p_linear_mom_dot  = mass * (xe ^(R_trans*gravity - Sw *pe_dot) ) + Fm + Fv * x1_dot; 
+
+
+
+        // float integral_part = (p_linear_mom_dot+previous_residual)*timestep;
+        // float integral_sum = previous_sum +integral_part;
+
+        // previous_sum = integral_sum;
+
+        // //calculting residual signal 
+
+        // float residual = KI * (p_linear_momentum-integral_sum);
+        // float previous_residual =residual;
+
+        // float residual_dot = KI * (Fe-residual); 
+        
+
+
+
+
+
+        // recording the data to csv file
         dataFile<< Q_present[0]<< "," << Q_present[1]<< ","<< Q_present[2]<< ","<< Q_present[3]<< ","<< Q_present[4]<< ","<< Q_present[5]<< "," <<
         Qdot[0]<< "," << Qdot[1]<< ","<< Qdot[2]<< ","<< Qdot[3]<< ","<< Qdot[4]<< ","<< Qdot[5]<< "," <<
         Tor[0]<< "," << Tor[1]<< ","<< Tor[2]<< ","<< Tor[3]<< ","<< Tor[4]<< ","<< Tor[5]<< "," <<

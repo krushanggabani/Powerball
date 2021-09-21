@@ -82,10 +82,10 @@ set(BlasLapack_Libraries mkl_blas95_lp64 mkl_lapack95_lp64)
 # find_package(LAPACK CONFIG REQUIRED)
 # find_package(LAPACK REQUIRED)
 find_package(BLAS REQUIRED)
-# find_package(PythonLibs 2.7)
+find_package(PythonLibs 2.7)
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
-# include_directories(PRIVATE ${PYTHON_INCLUDE_DIRS})
-
+# include_directories(PRIVATE ${PYTHON3_INCLUDE_DIRS})
+include_directories(PRIVATE ${PYTHON_INCLUDE_DIRS})
 #find sdl library
 #find_package(SDL REQUIRED)
 #find_Package(SDL_mixer REQUIRED)
@@ -114,6 +114,19 @@ add_library(extApiPlatform ${extApiPlatform_LIB_SRC})
 # compile executables
 add_executable(homing src_main/homing.cpp)
 target_link_libraries(homing schunk_powerball)
+
+add_executable(hammer_col src_main/Krushang/hammer_collision_detection.cpp)
+target_link_libraries(hammer_col schunk_powerball schunk_kinematics extApi extApiPlatform pthread dynamixel phidget21 ${Boost_LIBRARIES} ${LAPACK_LIBRARIES} ${PYTHON_LIBRARIES} )
+
+add_executable(residual_signal src_main/Krushang/residual_signal.cpp)
+target_link_libraries(residual_signal schunk_powerball schunk_kinematics extApi extApiPlatform pthread dynamixel phidget21 ${Boost_LIBRARIES} ${LAPACK_LIBRARIES} ${PYTHON_LIBRARIES} )
+
+
+
+# add_executable(collision_detection src_main/Krushang/collision_detection.cpp)
+# target_link_libraries(collision_exp schunk_powerball schunk_kinematics extApi extApiPlatform pthread dynamixel phidget21 ${Boost_LIBRARIES} ${LAPACK_LIBRARIES})
+
+
 
 #add_executable(manualControl src_main/manualControl.cpp)
 #target_link_libraries(manualControl schunk_powerball pthread ${Boost_LIBRARIES})
@@ -196,8 +209,11 @@ target_link_libraries(homing schunk_powerball)
 # add_executable(hammer_before_intern src_main/Sri/hammer_before_intern.cpp)
 # target_link_libraries(hammer_before_intern schunk_powerball schunk_kinematics extApi extApiPlatform pthread  ${Boost_LIBRARIES} ${LAPACK_LIBRARIES})
 
-add_executable(collision_exp src_main/Sri/collision_exp.cpp)
-target_link_libraries(collision_exp schunk_powerball schunk_kinematics extApi extApiPlatform pthread dynamixel phidget21 ${Boost_LIBRARIES} ${LAPACK_LIBRARIES})
+# add_executable(collision_exp src_main/Sri/collision_exp.cpp)
+# target_link_libraries(collision_exp schunk_powerball schunk_kinematics extApi extApiPlatform pthread dynamixel phidget21 ${Boost_LIBRARIES} ${LAPACK_LIBRARIES})
+
+# add_executable(collision_detection src_main/Krushang/collision_detection.cpp)
+# target_link_libraries(collision_exp schunk_powerball schunk_kinematics extApi extApiPlatform pthread dynamixel phidget21 ${Boost_LIBRARIES} ${LAPACK_LIBRARIES})
 
 # add_executable(warmup src_main/identification/warmup.cpp)
 # target_link_libraries(warmup schunk_powerball schunk_kinematics extApi extApiPlatform pthread ${Boost_LIBRARIES} ${LAPACK_LIBRARIES})

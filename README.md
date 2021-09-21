@@ -1,5 +1,7 @@
 # C++ library for schunk powerball lwa4p (linux)
-### contributor: Amir Memar
+### contributor: Amir Memar , Sri Sadan 
+
+The code is developed by [HILS lab](https://github.com/ubhils).
 
 
 # Required libraries

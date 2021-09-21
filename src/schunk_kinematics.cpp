@@ -10,6 +10,7 @@ Kin::~Kin() {}
 int Kin::inputFile(std::string fileName, std::vector< std::vector<double> > *matrix)
 {
     const std::string& delim = " \t";
+    const std::string& delim2 = ",";
     string      line;
     string      strnum;
 
@@ -33,9 +34,12 @@ int Kin::inputFile(std::string fileName, std::vector< std::vector<double> > *mat
             // If i is not a delim, then append it to strnum
             if (delim.find(*i) == string::npos)
             {
-                strnum += *i;
-                if (i + 1 != line.end()) // If it's the last char, do not continue
+                if(delim2.find(*i) == string::npos){
+                    strnum += *i;
+                    if (i + 1 != line.end()) // If it's the last char, do not continue
                     continue;
+                }
+                
             }
 
             // if strnum is still empty, it means the previous char is also a
